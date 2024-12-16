@@ -13,58 +13,42 @@ import java.util.*;
 
 @Controller
 
-@RequestMapping("/customers")
 public class MainController {
 
-
-    @Autowired
-    private CustomerService customerService;
-
-
-    @GetMapping
-    public String getAllCustomers(Model model) {
-        List<Customer> customers = customerService.getAllCustomers();
-        model.addAttribute("customers", customers);
-        return "customerList";
-    }
-
-    @GetMapping("/{id}")
-    public String getCustomerById(@PathVariable int id, Model model) {
-        Customer customer = customerService.getCustomerById(id);
-        model.addAttribute("customer", customer);
-        return "customerDetail";
-    }
-
-    @GetMapping("/add")
-    public String showAddCustomerForm(Model model) {
-        model.addAttribute("customer", new Customer( 0,"", "", ""));
-        return "addCustomer";
-    }
-
-    @PostMapping("/add")
-    public String addCustomer(@ModelAttribute Customer customer) {
-        customerService.addCustomer(customer);
-        return "redirect:/customers";
+    @GetMapping("/mayTinh")
+    public String showSpices(Model model) {
+        return "caculator";
     }
 
 
-    @GetMapping("/edit/{id}")
-    public String showEditCustomerForm(@PathVariable int id, Model model) {
-        Customer customer = customerService.getCustomerById(id);
-        model.addAttribute("customer", customer);
-        return "editCustomer";
-    }
+    @PostMapping("/caculating")
+    public String chooseSpices(@RequestParam("numOne") int numOne,
+                               @RequestParam("mark") String mark,
+                               @RequestParam("numTwo") int numTwo,
+                               Model model) {
+        int result = 0;
 
-    @PostMapping("/edit/{id}")
-    public String updateCustomer(@PathVariable int id, @ModelAttribute Customer customer) {
-        customerService.updateCustomer(id, customer);
-        return "redirect:/customers";
-    }
+        switch (mark) {
+            case "cong":
+                result = numOne + numTwo;
+                break;
+            case "tru":
+                result = numOne - numTwo;
+                break;
+            case "nhan":
+                result = numOne * numTwo;
+                break;
+            case "chia":
+                if (numTwo != 0) {
+                    result = numOne / numTwo;
+                } else {
+                    result = 0;
+                }
+                break;
+        }
 
-    @GetMapping("/delete/{id}")
-    public String deleteCustomer(@PathVariable int id) {
-        customerService.deleteCustomer(id);
-        return "redirect:/customers";
+        model.addAttribute("result", result);
+        return "caculator";
     }
 
 }
