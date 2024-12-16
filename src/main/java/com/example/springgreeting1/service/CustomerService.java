@@ -5,5 +5,9 @@ import com.example.springgreeting1.model.Customer;
 import java.util.List;
 
 public interface CustomerService {
-    List<Customer> findAll();
+    List<Customer> getAllCustomers();
+    Customer getCustomerById(int id);
+    void addCustomer(Customer customer);
+    void updateCustomer(int id, Customer customer);
+    void deleteCustomer(int id);
 }
